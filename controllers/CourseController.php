@@ -62,7 +62,7 @@ class CourseController {
         $enrollment = new Enrollment();
         $isEnrolled = false;
         
-        if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'student') {
+        if (isset($_SESSION['user_id']) && $_SESSION['user_role'] == 0) {
             $isEnrolled = $enrollment->isEnrolled($_SESSION['user_id'], $id);
         }
         
@@ -71,6 +71,43 @@ class CourseController {
             'lessons' => $lessons,
             'isEnrolled' => $isEnrolled,
             'page_title' => $courseData['title']
+        ]);
+    }
+
+    /**
+     * Filter courses by category
+     */
+    public function category($category_id = null) {
+        if (!$category_id) {
+            header('Location: /course');
+            exit;
+        }
+
+        $course = new Course();
+        $category = new Category();
+        
+        $category_data = $category->getCategoryById($category_id);
+        
+        if (!$category_data) {
+            header('HTTP/1.0 404 Not Found');
+            echo "Danh mục không tồn tại";
+            exit;
+        }
+
+        // Get courses for this category
+        $courses = $course->getAllCourses();
+        $courses = array_filter($courses, function($c) use ($category_id) {
+            return $c['category_id'] == $category_id;
+        });
+        
+        $categories = $category->getAllCategories();
+        
+        $this->render('courses/category', [
+            'courses' => $courses,
+            'categories' => $categories,
+            'category' => $category_data,
+            'category_id' => $category_id,
+            'page_title' => 'Khóa Học: ' . $category_data['name']
         ]);
     }
 

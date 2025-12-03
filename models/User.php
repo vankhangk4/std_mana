@@ -40,22 +40,32 @@ class User {
      */
     public function register($data) {
         $query = "INSERT INTO " . $this->table . " 
-                  (name, email, password, phone, role, status, created_at)
-                  VALUES (:name, :email, :password, :phone, :role, :status, NOW())";
+                  (username, email, password, fullname, role, created_at)
+                  VALUES (:username, :email, :password, :fullname, :role, NOW())";
         
         $stmt = $this->pdo->prepare($query);
         
         // Hash password
         $password = password_hash($data['password'], PASSWORD_ARGON2ID);
         
-        $stmt->bindParam(':name', $data['name']);
-        $stmt->bindParam(':email', $data['email']);
-        $stmt->bindParam(':password', $password);
-        $stmt->bindParam(':phone', $data['phone'] ?? null);
-        $stmt->bindParam(':role', $data['role'] ?? 'student');
-        $stmt->bindParam(':status', $data['status'] ?? 1);
+        // Map role string to int: student=0, instructor=1, admin=2
+        $role_int = 0;
+        if (isset($data['role'])) {
+            if ($data['role'] === 'instructor') {
+                $role_int = 1;
+            } elseif ($data['role'] === 'admin') {
+                $role_int = 2;
+            }
+        }
         
-        return $stmt->execute();
+        // Use execute with array binding
+        return $stmt->execute([
+            ':username' => $data['name'] ?? $data['email'], // Use email as username if name not provided
+            ':email' => $data['email'],
+            ':password' => $password,
+            ':fullname' => $data['name'] ?? '',
+            ':role' => $role_int
+        ]);
     }
 
     /**

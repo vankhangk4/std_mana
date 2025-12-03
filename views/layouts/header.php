@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">Học Tập Online</a>
+            <a class="navbar-brand" href="/">G3 Study</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,13 +25,16 @@
                                 <?php echo htmlspecialchars($_SESSION['user_name']); ?>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="userMenu">
-                                <?php if ($_SESSION['user_role'] === 'student'): ?>
+                                <?php if ($_SESSION['user_role'] == 0): ?>
                                     <a class="dropdown-item" href="/student/dashboard">Dashboard</a>
                                     <a class="dropdown-item" href="/student/my-courses">Khóa Học Của Tôi</a>
-                                <?php elseif ($_SESSION['user_role'] === 'instructor'): ?>
+                                <?php elseif ($_SESSION['user_role'] == 1): ?>
                                     <a class="dropdown-item" href="/instructor/dashboard">Dashboard</a>
-                                <?php elseif ($_SESSION['user_role'] === 'admin'): ?>
+                                <?php elseif ($_SESSION['user_role'] == 2): ?>
                                     <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
+                                <?php elseif ($_SESSION['user_role'] == 17): ?>
+                                    <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
+                                    <a class="dropdown-item" href="/admin/approvals">Phê Duyệt Khóa Học</a>
                                 <?php endif; ?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/auth/logout">Đăng Xuất</a>
@@ -50,6 +53,7 @@
         </div>
     </nav>
 
+    <div id="main-content">
     <?php if (isset($_SESSION['success'])): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>

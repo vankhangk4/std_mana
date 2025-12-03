@@ -1,24 +1,108 @@
 /* Main Styles */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: #050505;
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#main-content {
+    flex: 1;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
 }
 
 .navbar {
+    flex-shrink: 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar.navbar-dark {
+    background-color: #343a40 !important;
+}
+
+.navbar.navbar-dark .navbar-brand {
+    color: #000000 !important;
+    font-weight: bold;
+    font-size: 1.3rem;
+
+}
+
+.navbar.navbar-dark .navbar-brand:hover {
+    color: #e3e3e3 !important;
+}
+
+.navbar.navbar-dark .nav-link {
+    color: #1a1a1a !important;
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+.navbar.navbar-dark .nav-link:hover {
+    color: #505050 !important;
+}
+
+.navbar.navbar-dark .dropdown-menu {
+    background-color: #f8f9fa;
+}
+
+.navbar.navbar-dark .dropdown-item {
+    color: #333;
+}
+
+.navbar.navbar-dark .dropdown-item:hover {
+    background-color: #e9ecef;
+    color: #333;
 }
 
 .container {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 1200px;
 }
 
+/* footer {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding: 30px 0;
+    border-top: 1px solid #ddd;
+    width: 100%;
+    background-color: #343a40 !important;
+}
+
+footer .container {
+    background-color: transparent;
+    margin-bottom: 0px;
+    padding: 20px;
+} */
 footer {
-    margin-top: 30px;
+    flex-shrink: 0;
+    margin-top: auto;
+    padding: 15px 0;
+    border-top: 1px solid #ddd;
+    width: 100%;
+    background-color: #343a40 !important;
+}
+
+footer .container {
+    background-color: transparent;
+    margin-bottom: 0px;
+    padding: 1px;
 }
 
 .card {
@@ -33,6 +117,15 @@ footer {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+.btn-card {
+    display: block;
+}
+
+.btn-card:hover .card {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
 .btn-primary {
     background-color: #007bff;
     border: none;
@@ -44,6 +137,9 @@ footer {
 
 .alert {
     border-radius: 5px;
+    margin: 15px auto;
+    max-width: 1200px;
+    width: 100%;
 }
 
 .form-control {

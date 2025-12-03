@@ -19,12 +19,10 @@ class Material {
     public function getMaterialsByLesson($lesson_id) {
         $query = "SELECT * FROM " . $this->table . "
                   WHERE lesson_id = :lesson_id
-                  ORDER BY created_at DESC";
+                  ORDER BY uploaded_at DESC";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':lesson_id', $lesson_id);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->execute([':lesson_id' => $lesson_id]) ? $stmt->fetchAll() : [];
     }
 
     /**
@@ -33,8 +31,7 @@ class Material {
     public function getMaterialById($id) {
         $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $stmt->execute([':id' => $id]);
         return $stmt->fetch();
     }
 
@@ -43,18 +40,17 @@ class Material {
      */
     public function upload($data) {
         $query = "INSERT INTO " . $this->table . "
-                  (lesson_id, title, file_path, file_type, file_size, created_at)
-                  VALUES (:lesson_id, :title, :file_path, :file_type, :file_size, NOW())";
+                  (lesson_id, filename, file_path, file_type)
+                  VALUES (:lesson_id, :filename, :file_path, :file_type)";
         
         $stmt = $this->pdo->prepare($query);
         
-        $stmt->bindParam(':lesson_id', $data['lesson_id']);
-        $stmt->bindParam(':title', $data['title']);
-        $stmt->bindParam(':file_path', $data['file_path']);
-        $stmt->bindParam(':file_type', $data['file_type']);
-        $stmt->bindParam(':file_size', $data['file_size']);
-        
-        return $stmt->execute();
+        return $stmt->execute([
+            ':lesson_id' => $data['lesson_id'],
+            ':filename' => $data['filename'] ?? $data['title'] ?? 'Material',
+            ':file_path' => $data['file_path'],
+            ':file_type' => $data['file_type']
+        ]);
     }
 
     /**
@@ -63,8 +59,7 @@ class Material {
     public function delete($id) {
         $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        return $stmt->execute([':id' => $id]);
     }
 
     /**
@@ -76,8 +71,7 @@ class Material {
                   WHERE l.course_id = :course_id";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':course_id', $course_id);
-        $stmt->execute();
+        $stmt->execute([':course_id' => $course_id]);
         $result = $stmt->fetch();
         return $result['total'] ?? 0;
     }

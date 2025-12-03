@@ -14,12 +14,30 @@
 
             <h4 class="mt-4">Bài Học (<?php echo count($lessons); ?>)</h4>
             <div class="list-group">
-                <?php foreach ($lessons as $lesson): ?>
-                <a href="/lesson/view/<?php echo $lesson['id']; ?>" class="list-group-item list-group-item-action">
-                    <h5><?php echo htmlspecialchars($lesson['title']); ?></h5>
-                    <p class="text-muted mb-0"><?php echo htmlspecialchars(substr($lesson['description'], 0, 80)); ?>...</p>
-                </a>
-                <?php endforeach; ?>
+                <?php if (count($lessons) > 0): ?>
+                    <?php $count = 1; foreach ($lessons as $lesson): ?>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1"><span class="badge badge-secondary"><?php echo $count; ?></span> <?php echo htmlspecialchars($lesson['title']); ?></h5>
+                                <p class="text-muted mb-2"><?php echo htmlspecialchars(substr($lesson['content'] ?? '', 0, 100)); ?>...</p>
+                                <div>
+                                    <?php if ($lesson['video_url']): ?>
+                                        <span class="badge badge-info">📹 Có Video</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php if ($isEnrolled): ?>
+                                <a href="/student/lesson/<?php echo $course['id']; ?>/<?php echo $lesson['id']; ?>" class="btn btn-sm btn-primary">Xem Bài</a>
+                            <?php else: ?>
+                                <button class="btn btn-sm btn-secondary" disabled>Xem Bài</button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <?php $count++; endforeach; ?>
+                <?php else: ?>
+                    <div class="alert alert-info mb-0">Khóa học này chưa có bài giảng</div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -34,7 +52,7 @@
                         <a href="/student/my-courses" class="btn btn-success btn-block">Đã Đăng Ký</a>
                         <a href="/enrollment/delete/<?php echo $course['id']; ?>" class="btn btn-danger btn-block mt-2" onclick="return confirm('Xác nhận hủy đăng ký?')">Hủy Đăng Ký</a>
                     <?php else: ?>
-                        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'student'): ?>
+                        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] == 0): ?>
                             <a href="/enrollment/create/<?php echo $course['id']; ?>" class="btn btn-primary btn-block">Đăng Ký Khóa Học</a>
                         <?php else: ?>
                             <a href="/auth/login" class="btn btn-primary btn-block">Đăng Nhập Để Đăng Ký</a>

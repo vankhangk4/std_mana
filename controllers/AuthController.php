@@ -10,6 +10,18 @@ class AuthController {
      * Show login form
      */
     public function login() {
+        // If already logged in, redirect to dashboard
+        if (isset($_SESSION['user_id']) && isset($_SESSION['user_role'])) {
+            if ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 17) {
+                header('Location: /admin/dashboard');
+            } elseif ($_SESSION['user_role'] == 1) {
+                header('Location: /instructor/dashboard');
+            } else {
+                header('Location: /student/dashboard');
+            }
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->handleLogin();
         } else {
@@ -41,22 +53,16 @@ class AuthController {
             exit;
         }
 
-        if ($userRecord['status'] != 1) {
-            $_SESSION['error'] = 'Tài khoản của bạn đã bị vô hiệu hóa';
-            header('Location: /auth/login');
-            exit;
-        }
-
         // Set session
         $_SESSION['user_id'] = $userRecord['id'];
-        $_SESSION['user_name'] = $userRecord['name'];
+        $_SESSION['user_name'] = $userRecord['fullname'];
         $_SESSION['user_email'] = $userRecord['email'];
         $_SESSION['user_role'] = $userRecord['role'];
 
-        // Redirect based on role
-        if ($userRecord['role'] === 'admin') {
+        // Redirect based on role (0=student, 1=instructor, 2=admin, 17=course reviewer)
+        if ($userRecord['role'] == 2 || $userRecord['role'] == 17) {
             header('Location: /admin/dashboard');
-        } elseif ($userRecord['role'] === 'instructor') {
+        } elseif ($userRecord['role'] == 1) {
             header('Location: /instructor/dashboard');
         } else {
             header('Location: /student/dashboard');
@@ -68,6 +74,18 @@ class AuthController {
      * Show register form
      */
     public function register() {
+        // If already logged in, redirect to dashboard
+        if (isset($_SESSION['user_id']) && isset($_SESSION['user_role'])) {
+            if ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 17) {
+                header('Location: /admin/dashboard');
+            } elseif ($_SESSION['user_role'] == 1) {
+                header('Location: /instructor/dashboard');
+            } else {
+                header('Location: /student/dashboard');
+            }
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->handleRegister();
         } else {
@@ -124,7 +142,7 @@ class AuthController {
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'role' => in_array($role, ['student', 'instructor']) ? $role : 'student'
+            'role' => in_array($role, ['student', 'instructor', 'admin']) ? $role : 'student'
         ])) {
             $_SESSION['success'] = 'Đăng ký thành công. Vui lòng đăng nhập';
             header('Location: /auth/login');

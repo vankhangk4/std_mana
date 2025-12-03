@@ -37,12 +37,16 @@ spl_autoload_register(function($class) {
 });
 
 // Get requested URL
-$url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : 'home';
-$url_parts = explode('/', $url);
+$url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '';
+// If URL is empty or root, default to home
+if (empty($url) || $url === '/') {
+    $url = 'home';
+}
+$url_parts = array_values(array_filter(explode('/', $url))); // Remove empty parts and reset keys
 
 // Determine controller and action
 $controller_name = !empty($url_parts[0]) ? ucfirst($url_parts[0]) . 'Controller' : 'HomeController';
-$action = isset($url_parts[1]) ? $url_parts[1] : 'index';
+$action = isset($url_parts[1]) ? str_replace('-', '_', $url_parts[1]) : 'index';
 
 // Check if controller exists and instantiate
 $controller_file = CONTROLLERS_PATH . '/' . $controller_name . '.php';

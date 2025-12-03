@@ -1,4 +1,6 @@
-    <footer class="bg-dark text-white mt-5 py-4">
+    </div>
+
+    <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -28,3 +30,4 @@
     <script src="/assets/js/script.js"></script>
 </body>
 </html>
+

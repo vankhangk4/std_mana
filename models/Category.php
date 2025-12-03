@@ -29,8 +29,7 @@ class Category {
     public function getCategoryById($id) {
         $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $stmt->execute([':id' => $id]);
         return $stmt->fetch();
     }
 

@@ -10,7 +10,7 @@ class EnrollmentController {
      * Enroll student in course
      */
     public function create($course_id = null) {
-        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'student') {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 0) {
             $_SESSION['error'] = 'Vui lòng đăng nhập để đăng ký khóa học';
             header('Location: /auth/login');
             exit;
@@ -31,7 +31,7 @@ class EnrollmentController {
             exit;
         }
 
-        if ($enrollment->enroll($_SESSION['user_id'], $course_id)) {
+        if ($enrollment->enroll($course_id, $_SESSION['user_id'])) {
             $_SESSION['success'] = 'Đăng ký khóa học thành công';
             header('Location: /student/my-courses');
         } else {
@@ -45,7 +45,7 @@ class EnrollmentController {
      * Unenroll from course
      */
     public function delete($course_id = null) {
-        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'student') {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 0) {
             $_SESSION['error'] = 'Vui lòng đăng nhập';
             header('Location: /auth/login');
             exit;

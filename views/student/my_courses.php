@@ -5,15 +5,26 @@
 
     <?php if (isset($enrollments) && count($enrollments) > 0): ?>
         <div class="row">
-            <?php foreach ($enrollments as $enrollment): ?>
+            <?php 
+            $lesson_progress = new LessonProgress();
+            $user_id = $_SESSION['user_id'];
+            
+            foreach ($enrollments as $enrollment): 
+                $calculated_progress = $lesson_progress->getCourseProgress($user_id, $enrollment['course_id']);
+            ?>
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><?php echo htmlspecialchars($enrollment['title']); ?></h5>
                         <p class="card-text"><?php echo htmlspecialchars(substr($enrollment['description'], 0, 80)); ?>...</p>
                         <p class="text-muted">Giảng viên: <?php echo htmlspecialchars($enrollment['instructor_name']); ?></p>
-                        <p>Tiến độ: <div class="progress"><div class="progress-bar" style="width: <?php echo $enrollment['progress']; ?>%"></div></div></p>
-                        <a href="/student/course-progress/<?php echo $enrollment['course_id']; ?>" class="btn btn-primary btn-sm">Xem Chi Tiết</a>
+                        <p>
+                            <strong>Tiến độ: <?php echo $calculated_progress; ?>%</strong>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" style="width: <?php echo $calculated_progress; ?>%"></div>
+                            </div>
+                        </p>
+                        <a href="/course/detail/<?php echo $enrollment['course_id']; ?>" class="btn btn-primary btn-sm">Xem Chi Tiết</a>
                     </div>
                 </div>
             </div>

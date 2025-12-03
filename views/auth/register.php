@@ -36,17 +36,36 @@
 
                 <div class="form-group">
                     <label for="role">Đăng Ký Như Là</label>
-                    <select id="role" name="role" class="form-control">
+                    <select id="role" name="role" class="form-control" onchange="updateRoleInfo()">
                         <option value="student">Học Viên</option>
                         <option value="instructor">Giảng Viên</option>
+                        <option value="admin">Quản Trị Viên</option>
                     </select>
+                    <small class="form-text text-muted d-block mt-2" id="roleInfo">
+                        Đăng ký như học viên để tham gia và học các khóa học.
+                    </small>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Đăng Ký</button>
-                <a href="/auth/login" class="btn btn-link">Đã có tài khoản? Đăng nhập</a>
+                <button type="submit" class="btn btn-primary btn-block">Đăng Ký</button>
+                <a href="/auth/login" class="btn btn-link btn-block">Đã có tài khoản? Đăng nhập</a>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+function updateRoleInfo() {
+    const role = document.getElementById('role').value;
+    const roleInfo = document.getElementById('roleInfo');
+    
+    if (role === 'instructor') {
+        roleInfo.innerHTML = '<i class="fa fa-info-circle text-info"></i> Đăng ký như giảng viên để tạo và quản lý các khóa học. Các khóa học được xuất bản phải được phê duyệt bởi quản trị viên trước khi công khai.';
+    } else if (role === 'admin') {
+        roleInfo.innerHTML = '<i class="fa fa-info-circle text-warning"></i> Đăng ký như quản trị viên để quản lý hệ thống, phê duyệt khóa học, và quản lý người dùng.';
+    } else {
+        roleInfo.innerHTML = 'Đăng ký như học viên để tham gia và học các khóa học.';
+    }
+}
+</script>
 
 <?php include VIEWS_PATH . '/layouts/footer.php'; ?>

@@ -33,11 +33,12 @@ class Course {
         
         $stmt = $this->pdo->prepare($query);
         
+        $params = [];
         if ($status) {
-            $stmt->bindParam(':status', $status);
+            $params[':status'] = $status;
         }
         
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll();
     }
 
@@ -55,8 +56,7 @@ class Course {
                   GROUP BY c.id";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $stmt->execute([':id' => $id]);
         return $stmt->fetch();
     }
 
@@ -64,13 +64,17 @@ class Course {
      * Get courses by instructor
      */
     public function getCoursesByInstructor($instructor_id) {
-        $query = "SELECT * FROM " . $this->table . " 
-                  WHERE instructor_id = :instructor_id
-                  ORDER BY created_at DESC";
+        $query = "SELECT c.*, 
+                  ca.status as approval_status,
+                  ca.reviewed_by,
+                  ca.notes
+                  FROM " . $this->table . " c
+                  LEFT JOIN course_approvals ca ON c.id = ca.course_id
+                  WHERE c.instructor_id = :instructor_id
+                  ORDER BY c.created_at DESC";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':instructor_id', $instructor_id);
-        $stmt->execute();
+        $stmt->execute([':instructor_id' => $instructor_id]);
         return $stmt->fetchAll();
     }
 
@@ -79,23 +83,26 @@ class Course {
      */
     public function create($data) {
         $query = "INSERT INTO " . $this->table . "
-                  (title, description, category_id, instructor_id, price, duration, 
-                   thumbnail, status, created_at)
+                  (title, description, category_id, instructor_id, price, duration_weeks, 
+                   level, image, status, created_at)
                   VALUES (:title, :description, :category_id, :instructor_id, :price, 
-                          :duration, :thumbnail, :status, NOW())";
+                          :duration_weeks, :level, :image, :status, NOW())";
         
         $stmt = $this->pdo->prepare($query);
         
-        $stmt->bindParam(':title', $data['title']);
-        $stmt->bindParam(':description', $data['description']);
-        $stmt->bindParam(':category_id', $data['category_id']);
-        $stmt->bindParam(':instructor_id', $data['instructor_id']);
-        $stmt->bindParam(':price', $data['price'] ?? 0);
-        $stmt->bindParam(':duration', $data['duration'] ?? null);
-        $stmt->bindParam(':thumbnail', $data['thumbnail'] ?? null);
-        $stmt->bindParam(':status', $data['status'] ?? 'draft');
+        $stmt->execute([
+            ':title' => $data['title'],
+            ':description' => $data['description'],
+            ':category_id' => $data['category_id'] ?? 1,
+            ':instructor_id' => $data['instructor_id'],
+            ':price' => $data['price'] ?? 0,
+            ':duration_weeks' => $data['duration_weeks'] ?? 1,
+            ':level' => $data['level'] ?? 'Beginner',
+            ':image' => $data['image'] ?? null,
+            ':status' => $data['status'] ?? 'draft'
+        ]);
         
-        return $stmt->execute();
+        return true;
     }
 
     /**
@@ -111,14 +118,13 @@ class Course {
         
         $query .= implode(", ", $fields) . ", updated_at = NOW() WHERE id = :id";
         
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        
+        $params = [':id' => $id];
         foreach ($data as $key => $value) {
-            $stmt->bindParam(':' . $key, $value);
+            $params[':' . $key] = $value;
         }
         
-        return $stmt->execute();
+        $stmt = $this->pdo->prepare($query);
+        return $stmt->execute($params);
     }
 
     /**
@@ -127,8 +133,7 @@ class Course {
     public function delete($id) {
         $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        return $stmt->execute([':id' => $id]);
     }
 
     /**
@@ -150,13 +155,13 @@ class Course {
         
         $stmt = $this->pdo->prepare($query);
         $keyword_param = "%{$keyword}%";
-        $stmt->bindParam(':keyword', $keyword_param);
         
+        $params = [':keyword' => $keyword_param];
         if ($category_id) {
-            $stmt->bindParam(':category_id', $category_id);
+            $params[':category_id'] = $category_id;
         }
         
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll();
     }
 }

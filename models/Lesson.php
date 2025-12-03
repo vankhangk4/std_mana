@@ -19,11 +19,10 @@ class Lesson {
     public function getLessonsByCourse($course_id) {
         $query = "SELECT * FROM " . $this->table . "
                   WHERE course_id = :course_id
-                  ORDER BY order_num ASC";
+                  ORDER BY `order` ASC";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':course_id', $course_id);
-        $stmt->execute();
+        $stmt->execute([':course_id' => $course_id]);
         return $stmt->fetchAll();
     }
 
@@ -33,8 +32,7 @@ class Lesson {
     public function getLessonById($id) {
         $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $stmt->execute([':id' => $id]);
         return $stmt->fetch();
     }
 
@@ -43,19 +41,20 @@ class Lesson {
      */
     public function create($data) {
         $query = "INSERT INTO " . $this->table . "
-                  (course_id, title, description, video_url, content, order_num, created_at)
-                  VALUES (:course_id, :title, :description, :video_url, :content, :order_num, NOW())";
+                  (course_id, title, content, video_url, `order`, created_at)
+                  VALUES (:course_id, :title, :content, :video_url, :order, NOW())";
         
         $stmt = $this->pdo->prepare($query);
         
-        $stmt->bindParam(':course_id', $data['course_id']);
-        $stmt->bindParam(':title', $data['title']);
-        $stmt->bindParam(':description', $data['description'] ?? null);
-        $stmt->bindParam(':video_url', $data['video_url'] ?? null);
-        $stmt->bindParam(':content', $data['content'] ?? null);
-        $stmt->bindParam(':order_num', $data['order_num'] ?? 1);
+        $stmt->execute([
+            ':course_id' => $data['course_id'],
+            ':title' => $data['title'],
+            ':content' => $data['content'] ?? null,
+            ':video_url' => $data['video_url'] ?? null,
+            ':order' => $data['order'] ?? 1
+        ]);
         
-        return $stmt->execute();
+        return true;
     }
 
     /**
@@ -66,19 +65,18 @@ class Lesson {
         $fields = [];
         
         foreach ($data as $key => $value) {
-            $fields[] = $key . " = :" . $key;
+            $fields[] = "`" . $key . "` = :" . $key;
         }
         
-        $query .= implode(", ", $fields) . ", updated_at = NOW() WHERE id = :id";
+        $query .= implode(", ", $fields) . " WHERE id = :id";
+        
+        $params = [':id' => $id];
+        foreach ($data as $key => $value) {
+            $params[':' . $key] = $value;
+        }
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        
-        foreach ($data as $key => $value) {
-            $stmt->bindParam(':' . $key, $value);
-        }
-        
-        return $stmt->execute();
+        return $stmt->execute($params);
     }
 
     /**
@@ -87,8 +85,7 @@ class Lesson {
     public function delete($id) {
         $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        return $stmt->execute([':id' => $id]);
     }
 }
 ?>
