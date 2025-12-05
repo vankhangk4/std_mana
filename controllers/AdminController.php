@@ -211,8 +211,27 @@ class AdminController {
         $user = new User();
         
         if ($role !== null) {
-            $users = $user->getAllUsers(intval($role));
-            $role_name = $this->getRoleName(intval($role));
+            // Convert role to int for comparison
+            $role_int = intval($role);
+        
+            if ($role_int == 0 || $role === '0') {
+                // Lấy tất cả người dùng có role khác 1 và khác 17 (học viên)
+                $users = $user->getStudents();
+                $role_name = 'Học Viên';
+                $role = 0;
+            } elseif ($role_int == 1 || $role === '1') {
+                $users = $user->getAllUsers(1);
+                $role_name = 'Giảng Viên';
+                $role = 1;
+            } elseif ($role_int == 2 || $role === '2') {
+                $users = $user->getAllUsers(2);
+                $role_name = 'Quản Trị Viên';
+                $role = 2;
+            } else {
+                $users = $user->getAllUsers();
+                $role_name = 'Tất Cả Người Dùng';
+                $role = null;
+            }
         } else {
             $users = $user->getAllUsers();
             $role_name = 'Tất Cả Người Dùng';

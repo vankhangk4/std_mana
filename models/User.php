@@ -97,7 +97,7 @@ class User {
     public function getAllUsers($role = null) {
         $query = "SELECT * FROM " . $this->table;
         
-        if ($role) {
+        if ($role !== null) {
             $query .= " WHERE role = :role";
         }
         
@@ -105,10 +105,20 @@ class User {
         
         $stmt = $this->pdo->prepare($query);
         
-        if ($role) {
-            $stmt->bindParam(':role', $role);
+        if ($role !== null) {
+            $stmt->bindParam(':role', $role, PDO::PARAM_INT);
         }
         
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Get all students (role != 1 and role != 17)
+     */
+    public function getStudents() {
+        $query = "SELECT * FROM " . $this->table . " WHERE role != 1 AND role != 17 ORDER BY created_at DESC";
+        $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
     }

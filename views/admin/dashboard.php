@@ -16,35 +16,15 @@
             </a>
         </div>
         <div class="col-md-3">
-            <a href="/admin/users/1" class="card-link text-decoration-none">
+            <a href="/admin/courses" class="card-link text-decoration-none">
                 <div class="card border-0 shadow-sm" style="cursor: pointer;">
                     <div class="card-body text-center py-4">
-                        <h4 class="text-muted mb-2">Giảng Viên</h4>
-                        <h1 class="text-info"><?php echo $totalInstructors; ?></h1>
+                        <h4 class="text-muted mb-2">Khóa Học</h4>
+                        <h1 class="text-warning"><?php echo $totalCourses; ?></h1>
                         <small class="text-muted">Nhấp để xem chi tiết</small>
                     </div>
                 </div>
             </a>
-        </div>
-        <div class="col-md-3">
-            <a href="/admin/users/0" class="card-link text-decoration-none">
-                <div class="card border-0 shadow-sm" style="cursor: pointer;">
-                    <div class="card-body text-center py-4">
-                        <h4 class="text-muted mb-2">Học Viên</h4>
-                        <h1 class="text-success"><?php echo $totalStudents; ?></h1>
-                        <small class="text-muted">Nhấp để xem chi tiết</small>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center py-4">
-                    <h4 class="text-muted mb-2">Khóa Học</h4>
-                    <h1 class="text-warning"><?php echo $totalCourses; ?></h1>
-                    <small class="text-muted">Tổng số khóa học</small>
-                </div>
-            </div>
         </div>
         <div class="col-md-3">
             <a href="/admin/approvals" class="card-link text-decoration-none">

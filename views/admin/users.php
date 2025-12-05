@@ -29,13 +29,13 @@
         <a href="/admin/users" class="btn <?php echo $role === null ? 'btn-primary' : 'btn-outline-primary'; ?>">
             Tất Cả (<?php echo count($users); ?>)
         </a>
-        <a href="/admin/users/0" class="btn <?php echo $role === 0 ? 'btn-success' : 'btn-outline-success'; ?>">
+        <a href="/admin/users/0" class="btn <?php echo $role == 0 ? 'btn-success' : 'btn-outline-success'; ?>">
             Học Viên
         </a>
-        <a href="/admin/users/1" class="btn <?php echo $role === 1 ? 'btn-info' : 'btn-outline-info'; ?>">
+        <a href="/admin/users/1" class="btn <?php echo $role == 1 ? 'btn-info' : 'btn-outline-info'; ?>">
             Giảng Viên
         </a>
-        <a href="/admin/users/2" class="btn <?php echo $role === 2 ? 'btn-danger' : 'btn-outline-danger'; ?>">
+        <a href="/admin/users/2" class="btn <?php echo $role == 2 ? 'btn-danger' : 'btn-outline-danger'; ?>">
             Quản Trị Viên
         </a>
     </div>
