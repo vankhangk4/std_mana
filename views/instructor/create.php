@@ -9,7 +9,7 @@
                 <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/instructor/create">
+            <form method="POST" action="/std_mana/instructor/create">
                 <div class="form-group">
                     <label for="title">Tên Khóa Học</label>
                     <input type="text" id="title" name="title" class="form-control" required>
@@ -52,8 +52,8 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Tạo Khóa Học</button>
-                <a href="/instructor/dashboard" class="btn btn-secondary">Hủy</a>
+                <button  type="submit" class="btn btn-primary">Tạo Khóa Học</button>
+                <a href="/std_mana/instructor/dashboard" class="btn btn-secondary">Hủy</a>
             </form>
         </div>
     </div>

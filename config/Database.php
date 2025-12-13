@@ -6,9 +6,9 @@
 
 class Database {
     private $host = 'localhost';
-    private $db_name = 'onlinecourse';
+    private $db_name = '3ae';
     private $user = 'root';
-    private $password = 'Dk@17092004';
+    private $password = '';
     private $pdo;
     private static $instance;
 
@@ -19,7 +19,7 @@ class Database {
         $this->pdo = null;
 
         try {
-            $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name . ';charset=utf8mb4';
+            $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name . ';charset=utf8';
             
             $this->pdo = new PDO(
                 $dsn,

@@ -26,9 +26,9 @@
     <div class="mb-5">
         <select class="form-control" onchange="if(this.value) window.location.href = this.value;">
             <option value="">-- Chọn Danh Mục --</option>
-            <option value="/course">Tất Cả Khóa Học</option>
+            <option value="/std_mana/course">Tất Cả Khóa Học</option>
             <?php foreach ($categories as $cat): ?>
-                <option value="/course/category/<?php echo $cat['id']; ?>">
+                <option value="/std_mana/course/category/<?php echo $cat['id']; ?>">
                     <?php echo htmlspecialchars($cat['name']); ?>
                 </option>
             <?php endforeach; ?>
@@ -58,7 +58,7 @@
                         <?php endif; ?>
                     <?php endif; ?>
                     
-                    <a href="/course/detail/<?php echo $course['id']; ?>" class="btn btn-primary d-block mt-2">Xem Chi Tiết</a>
+                    <a href="/std_mana/course/detail/<?php echo $course['id']; ?>" class="btn btn-primary d-block mt-2">Xem Chi Tiết</a>
                 </div>
             </div>
         </div>

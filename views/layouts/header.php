@@ -10,14 +10,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">G3 Study</a>
+            <a class="navbar-brand" href="/std_mana">G3 Study</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/course">Khóa Học</a>
+                        <a class="nav-link" href="/std_mana/course">Khóa Học</a>
                     </li>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <li class="nav-item dropdown">
@@ -42,10 +42,10 @@
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/auth/login">Đăng Nhập</a>
+                            <a class="nav-link" href="/std_mana/auth/login">Đăng Nhập</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/auth/register">Đăng Ký</a>
+                            <a class="nav-link" href="/std_mana/auth/register">Đăng Ký</a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -71,3 +71,4 @@
             </button>
         </div>
     <?php endif; ?>
+    <?php

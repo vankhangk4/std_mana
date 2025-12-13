@@ -6,7 +6,7 @@
             <h2>Quản Lý Khóa Học</h2>
             <p class="text-muted">Chào mừng, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</p>
         </div>
-        <a href="/instructor/create" class="btn btn-success btn-lg">
+        <a href="/std_mana/instructor/create" class="btn btn-success btn-lg">
             <i class="fa fa-plus"></i> Tạo Khóa Học Mới
         </a>
     </div>
@@ -101,7 +101,7 @@
                         <td>
                             <div>
                                 <h6 class="mb-1">
-                                    <a href="/instructor/edit/<?php echo $course['id']; ?>" class="text-decoration-none text-dark">
+                                    <a href="/std_mana/instructor/edit/<?php echo $course['id']; ?>" class="text-decoration-none text-dark">
                                         <?php echo htmlspecialchars($course['title']); ?>
                                     </a>
                                 </h6>
@@ -148,7 +148,7 @@
         <div class="card-body">
             <div class="alert alert-info mb-0">
                 <i class="fa fa-info-circle"></i> Bạn chưa tạo khóa học nào. 
-                <a href="/instructor/create" class="alert-link">Tạo khóa học mới</a>
+                <a href="/std_mana/instructor/create" class="alert-link">Tạo khóa học mới</a>
             </div>
         </div>
         <?php endif; ?>
@@ -187,7 +187,7 @@
                         <td>
                             <div>
                                 <h6 class="mb-1">
-                                    <a href="/instructor/edit/<?php echo $course['id']; ?>" class="text-decoration-none text-dark">
+                                    <a href="/std_mana/instructor/edit/<?php echo $course['id']; ?>" class="text-decoration-none text-dark">
                                         <?php echo htmlspecialchars($course['title']); ?>
                                     </a>
                                 </h6>
@@ -205,7 +205,7 @@
                             </small>
                         </td>
                         <td>
-                            <a href="/instructor/edit/<?php echo $course['id']; ?>" class="btn btn-sm btn-primary">
+                            <a href="/std_mana/instructor/edit/<?php echo $course['id']; ?>" class="btn btn-sm btn-primary">
                                 <i class="fa fa-edit"></i> Sửa
                             </a>
                         </td>
