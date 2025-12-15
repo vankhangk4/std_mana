@@ -18,7 +18,7 @@ class User {
      */
     public function getUserById($id) {
         $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->pdo->prepare(query: $query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch();
