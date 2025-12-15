@@ -13,11 +13,11 @@ class AuthController {
         // If already logged in, redirect to dashboard
         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role'])) {
             if ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 17) {
-                header('Location: /admin/dashboard');
+                header('Location: /std_mana/admin/dashboard');
             } elseif ($_SESSION['user_role'] == 1) {
-                header('Location: /instructor/dashboard');
+                header('Location: /std_mana/instructor/dashboard');
             } else {
-                header('Location: /student/dashboard');
+                header('Location:/std_mana/student/dashboard');
             }
             exit;
         }
@@ -40,7 +40,7 @@ class AuthController {
 
         if (empty($email) || empty($password)) {
             $_SESSION['error'] = 'Email và mật khẩu không được để trống';
-            header('Location: /auth/login');
+            header('Location: /std_mana/auth/login');
             exit;
         }
 
@@ -49,7 +49,7 @@ class AuthController {
 
         if (!$userRecord || !$user->verifyPassword($password, $userRecord['password'])) {
             $_SESSION['error'] = 'Email hoặc mật khẩu không chính xác';
-            header('Location: /auth/login');
+            header('Location: /std_mana/auth/login');
             exit;
         }
 
@@ -61,11 +61,11 @@ class AuthController {
 
         // Redirect based on role (0=student, 1=instructor, 2=admin, 17=course reviewer)
         if ($userRecord['role'] == 2 || $userRecord['role'] == 17) {
-            header('Location: /admin/dashboard');
+            header('Location: /std_mana/admin/dashboard');
         } elseif ($userRecord['role'] == 1) {
-            header('Location: /instructor/dashboard');
+            header('Location: /std_mana/instructor/dashboard');
         } else {
-            header('Location: /student/dashboard');
+            header('Location: /std_mana/student/dashboard');
         }
         exit;
     }
@@ -77,11 +77,11 @@ class AuthController {
         // If already logged in, redirect to dashboard
         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role'])) {
             if ($_SESSION['user_role'] == 2 || $_SESSION['user_role'] == 17) {
-                header('Location: /admin/dashboard');
+                header('Location: /std_mana/admin/dashboard');
             } elseif ($_SESSION['user_role'] == 1) {
-                header('Location: /instructor/dashboard');
+                header('Location: /std_mana/instructor/dashboard');
             } else {
-                header('Location: /student/dashboard');
+                header('Location: /std_mana/student/dashboard');
             }
             exit;
         }
@@ -108,32 +108,32 @@ class AuthController {
         // Validation
         if (empty($name) || empty($email) || empty($password) || empty($password_confirm)) {
             $_SESSION['error'] = 'Vui lòng điền tất cả các trường';
-            header('Location: /auth/register');
+            header('Location: /std_mana/auth/register');
             exit;
         }
 
         if ($password !== $password_confirm) {
             $_SESSION['error'] = 'Mật khẩu không khớp';
-            header('Location: /auth/register');
+            header('Location: /std_mana/auth/register');
             exit;
         }
 
         if (strlen($password) < 6) {
             $_SESSION['error'] = 'Mật khẩu phải có ít nhất 6 ký tự';
-            header('Location: /auth/register');
+            header('Location: /std_mana/auth/register');
             exit;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Email không hợp lệ';
-            header('Location: /auth/register');
+            header('Location: /std_mana/auth/register');
             exit;
         }
 
         $user = new User();
         if ($user->getUserByEmail($email)) {
             $_SESSION['error'] = 'Email này đã được đăng ký';
-            header('Location: /auth/register');
+            header('Location: /std_mana/auth/register');
             exit;
         }
 
@@ -145,10 +145,10 @@ class AuthController {
             'role' => in_array($role, ['student', 'instructor', 'admin']) ? $role : 'student'
         ])) {
             $_SESSION['success'] = 'Đăng ký thành công. Vui lòng đăng nhập';
-            header('Location: /auth/login');
+            header('Location: /std_mana/auth/login');
         } else {
             $_SESSION['error'] = 'Đã xảy ra lỗi khi đăng ký';
-            header('Location: /auth/register');
+            header('Location: /std_mana/auth/register');
         }
         exit;
     }

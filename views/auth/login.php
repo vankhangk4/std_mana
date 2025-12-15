@@ -9,7 +9,7 @@
                 <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/auth/login">
+            <form method="POST" action="/std_mana/auth/login">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" class="form-control" required>
@@ -21,7 +21,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Đăng Nhập</button>
-                <a href="/auth/register" class="btn btn-link">Chưa có tài khoản? Đăng ký</a>
+                <a href="/std_mana/auth/register" class="btn btn-link">Chưa có tài khoản? Đăng ký</a>
             </form>
         </div>
     </div>
