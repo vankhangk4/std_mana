@@ -31,7 +31,7 @@ class LessonController {
         }
 
         // Check if student is enrolled in course
-        if ($_SESSION['user_role'] === 'student') {
+        if ($_SESSION['user_role'] == 0) {
             $enrollment = new Enrollment();
             if (!$enrollment->isEnrolled($_SESSION['user_id'], $lessonData['course_id'])) {
                 $_SESSION['error'] = 'Bạn chưa đăng ký khóa học này';
@@ -46,10 +46,22 @@ class LessonController {
         $course = new Course();
         $courseData = $course->getCourseById($lessonData['course_id']);
         
+        // Get all lessons for the course
+        $lesson_obj = new Lesson();
+        $allLessons = $lesson_obj->getLessonsByCourse($lessonData['course_id']);
+        
+        // Get lesson progress
+        $lessonProgress = new LessonProgress();
+        $isLessonCompleted = $lessonProgress->isLessonCompleted($_SESSION['user_id'], $id);
+        $courseProgress = $lessonProgress->getCourseProgress($_SESSION['user_id'], $lessonData['course_id']);
+        
         $this->render('student/lesson', [
             'lesson' => $lessonData,
             'materials' => $materials,
             'course' => $courseData,
+            'lessons' => $allLessons,
+            'is_lesson_completed' => $isLessonCompleted,
+            'course_progress' => $courseProgress,
             'page_title' => $lessonData['title']
         ]);
     }
