@@ -13,7 +13,7 @@
                 <div class="alert alert-success"><?php echo $_SESSION['success']; unset($_SESSION['success']); ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="/auth/register">
+            <form method="POST" action="/std_mana/auth/register">
                 <div class="form-group">
                     <label for="name">Tên Đầy Đủ</label>
                     <input type="text" id="name" name="name" class="form-control" required>
@@ -47,7 +47,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block">Đăng Ký</button>
-                <a href="/auth/login" class="btn btn-link btn-block">Đã có tài khoản? Đăng nhập</a>
+                <a href="/std_mana/auth/login" class="btn btn-link btn-block">Đã có tài khoản? Đăng nhập</a>
             </form>
         </div>
     </div>
